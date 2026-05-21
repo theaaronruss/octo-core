@@ -1,6 +1,6 @@
 # OctoCore
 
-A Chip-8 emulator written in C
+A CHIP-8 emulator written in C
 
 ## Dependencies
 * SDL3
