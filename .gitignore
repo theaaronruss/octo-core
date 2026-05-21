@@ -1,2 +1,4 @@
+octocore
+*.o
 compile_flags.txt
 .DS_Store
