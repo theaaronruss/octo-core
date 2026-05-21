@@ -1,16 +1,20 @@
 CC := gcc
+OBJ := build
 
-octocore: main.o cpu.o
+octocore: $(OBJ)/main.o $(OBJ)/cpu.o
 	$(CC) $^ $(LDFLAGS) -lSDL3 -o octocore
 
-main.o: src/main.c
-	$(CC) $(CFLAGS) -c src/main.c
+$(OBJ)/main.o: src/main.c | $(OBJ)
+	$(CC) $(CFLAGS) -c src/main.c -o $(OBJ)/main.o
 
-cpu.o: src/cpu.c
-	$(CC) $(CFLAGS) -I./includes -c src/cpu.c
+$(OBJ)/cpu.o: src/cpu.c | $(OBJ)
+	$(CC) $(CFLAGS) -I./includes -c src/cpu.c -o $(OBJ)/cpu.o
+
+$(OBJ):
+	mkdir -p build
 
 .PHONY: clean
 clean:
 	rm -f octocore
-	rm -f *.o
+	rm -rf $(OBJ)
 
