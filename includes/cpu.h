@@ -35,5 +35,7 @@ struct cpu {
     int16_t stack[];
 };
 
+void load_char_data();
+
 #endif
 
