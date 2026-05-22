@@ -3,7 +3,10 @@
 #include "cpu.h"
 
 int main(int argc, char *byte[]) {
-    load_char_data();
+    struct cpu cpu;
+    init_cpu(&cpu);
+    load_rom(&cpu, "test.ch8");
+    free_cpu(&cpu);
     return 0;
 }
 

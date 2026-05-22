@@ -2,6 +2,7 @@
 #define CPU_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 struct cpu {
     // Registers
@@ -32,10 +33,31 @@ struct cpu {
     int8_t sp;
 
     // Stack
-    int16_t stack[];
+    int16_t stack[16];
+
+    // Memory (4K)
+    int8_t *memory;
 };
 
-void load_char_data();
+/**
+ * Initialize the CPU.
+ *
+ * @return true if successful, otherwise false
+ */
+bool init_cpu(struct cpu *cpu);
+
+/**
+ * Free the resources from the CPU. Does nothing if cpu is NULL.
+ */
+void free_cpu(struct cpu *cpu);
+
+/**
+ * Load ROM contents into memory at 0x200.
+ *
+ * @param filename Filename of the ROM to load.
+ * @return true if successful, otherwise false
+ */
+bool load_rom(struct cpu *cpu, const char *filename);
 
 #endif
 

@@ -1,7 +1,16 @@
 #include "cpu.h"
+#include <stdbool.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 
-static int char_data_location = 0x050;
+#define MEM_SIZE 4096
+
+#define CHAR_ADDR 0x050
+#define ROM_ADDR 0x200
+#define ROM_SIZE 3584
+
 static int8_t char_data[] = {
     0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
     0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -21,9 +30,31 @@ static int8_t char_data[] = {
     0xF0, 0x80, 0xF0, 0x80, 0x80, // F
 };
 
-static int8_t memory[4096];
+bool init_cpu(struct cpu *cpu) {
+    cpu->memory = (int8_t *) malloc(MEM_SIZE);
+    if (cpu->memory == NULL) {
+        printf("Failed to allocate memory\n");
+        return false;
+    }
+    cpu->pc = ROM_ADDR;
+    memcpy(cpu->memory + CHAR_ADDR, char_data, 5 * 16);
+    return true;
+}
 
-void load_char_data() {
-    memcpy(memory + char_data_location, char_data, 5 * 16);
+void free_cpu(struct cpu *cpu) {
+    if (cpu == NULL) {
+        return;
+    }
+    free(cpu->memory);
+}
+
+bool load_rom(struct cpu *cpu, const char *filename) {
+    FILE *file = fopen(filename, "rb");
+    if (file == NULL) {
+        return false;
+    }
+    fread(cpu->memory + ROM_ADDR, 1, ROM_SIZE, file);
+    fclose(file);
+    return true;
 }
 
