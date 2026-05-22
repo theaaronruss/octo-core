@@ -58,3 +58,138 @@ bool load_rom(struct cpu *cpu, const char *filename) {
     return true;
 }
 
+void clear_display(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void subroutine_return(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void jump(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void call(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void skip_equal_value(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void skip_not_equal_value(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void skip_equal_register(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void load_value_to_register(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void add_value_to_register(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void load_register_to_register(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void or_registers(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void and_registers(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void xor_registers(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void add_registers(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void sub_registers(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void shift_register_right(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void sub_registers_reverse(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void shift_register_left(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void skip_not_equal_register(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void load_index(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void jump_offset(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void random(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void draw(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void skip_key_pressed(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void skip_key_not_pressed(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void load_delay_timer(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void load_key(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void set_delay_timer(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void set_sound_timer(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void add_index(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void load_sprite(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void load_bcd(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void save_registers(struct cpu *cpu) {
+    // TODO: Implement
+}
+
+void load_registers(struct cpu *cpu) {
+    // TODO: Implement
+}
