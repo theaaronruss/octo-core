@@ -11,7 +11,7 @@
 #define ROM_ADDR 0x200
 #define ROM_SIZE 3584
 
-static int8_t char_data[] = {
+static uint8_t char_data[] = {
     0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
     0x20, 0x60, 0x20, 0x20, 0x70, // 1
     0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
@@ -31,7 +31,7 @@ static int8_t char_data[] = {
 };
 
 bool init_cpu(struct cpu *cpu) {
-    cpu->memory = (int8_t *) malloc(MEM_SIZE);
+    cpu->memory = (uint8_t *) malloc(MEM_SIZE);
     if (cpu->memory == NULL) {
         printf("Failed to allocate memory\n");
         return false;
@@ -58,6 +58,15 @@ bool load_rom(struct cpu *cpu, const char *filename) {
     return true;
 }
 
+void cycle(struct cpu *cpu) {
+    uint8_t msb = cpu->memory[cpu->pc];
+    uint8_t lsb = cpu->memory[cpu->pc + 1];
+    uint16_t instruction = (msb << 8) | lsb;
+    if ((instruction & 0xF000) == 0x0000) {
+        jump(cpu, instruction);
+    }
+}
+
 void clear_display(struct cpu *cpu) {
     // TODO: Implement
 }
@@ -66,8 +75,8 @@ void subroutine_return(struct cpu *cpu) {
     // TODO: Implement
 }
 
-void jump(struct cpu *cpu) {
-    // TODO: Implement
+void jump(struct cpu *cpu, uint16_t instruction) {
+    cpu->pc = instruction & 0x0FFF;
 }
 
 void call(struct cpu *cpu) {
@@ -142,7 +151,7 @@ void jump_offset(struct cpu *cpu) {
     // TODO: Implement
 }
 
-void random(struct cpu *cpu) {
+void random_value(struct cpu *cpu) {
     // TODO: Implement
 }
 

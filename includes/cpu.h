@@ -6,37 +6,37 @@
 
 struct cpu {
     // Registers
-    int8_t v0;
-    int8_t v1;
-    int8_t v2;
-    int8_t v3;
-    int8_t v4;
-    int8_t v5;
-    int8_t v6;
-    int8_t v7;
-    int8_t v8;
-    int8_t v9;
-    int8_t vA;
-    int8_t vB;
-    int8_t vC;
-    int8_t vD;
-    int8_t vE;
-    int8_t vF;
+    uint8_t v0;
+    uint8_t v1;
+    uint8_t v2;
+    uint8_t v3;
+    uint8_t v4;
+    uint8_t v5;
+    uint8_t v6;
+    uint8_t v7;
+    uint8_t v8;
+    uint8_t v9;
+    uint8_t vA;
+    uint8_t vB;
+    uint8_t vC;
+    uint8_t vD;
+    uint8_t vE;
+    uint8_t vF;
     int16_t i;
-    int8_t dt;
-    int8_t st;
+    uint8_t dt;
+    uint8_t st;
 
     // Program counter
-    int16_t pc;
+    uint16_t pc;
 
     // Stack pointer
-    int8_t sp;
+    uint8_t sp;
 
     // Stack
-    int16_t stack[16];
+    uint16_t stack[16];
 
     // Memory (4K)
-    int8_t *memory;
+    uint8_t *memory;
 };
 
 /**
@@ -60,6 +60,11 @@ void free_cpu(struct cpu *cpu);
 bool load_rom(struct cpu *cpu, const char *filename);
 
 /**
+ * Retrieve next instruction and execute it.
+ */
+void cycle(struct cpu *cpu);
+
+/**
  * Clear the display.
  */
 void clear_display(struct cpu *cpu);
@@ -72,7 +77,7 @@ void subroutine_return(struct cpu *cpu);
 /**
  * Jump to an address by setting the program counter to a given value.
  */
-void jump(struct cpu *cpu);
+void jump(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Call subroutine at an address.
@@ -169,7 +174,7 @@ void jump_offset(struct cpu *cpu);
 /**
  * Set register to random value AND with a given value.
  */
-void random(struct cpu *cpu);
+void random_value(struct cpu *cpu);
 
 /**
  * Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision.
