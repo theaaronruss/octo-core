@@ -62,7 +62,7 @@ bool load_rom(struct cpu *cpu, const char *filename);
 /**
  * Retrieve next instruction and execute it.
  */
-void cycle(struct cpu *cpu);
+void clock_cycle(struct cpu *cpu);
 
 /**
  * Clear the display.

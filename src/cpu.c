@@ -58,12 +58,122 @@ bool load_rom(struct cpu *cpu, const char *filename) {
     return true;
 }
 
-void cycle(struct cpu *cpu) {
+void clock_cycle(struct cpu *cpu) {
     uint8_t msb = cpu->memory[cpu->pc];
     uint8_t lsb = cpu->memory[cpu->pc + 1];
     uint16_t instruction = (msb << 8) | lsb;
-    if ((instruction & 0xF000) == 0x0000) {
-        jump(cpu, instruction);
+
+    if (instruction == 0x00E0) {
+        // TODO: Clear display
+        printf("Clear display\n");
+    } else if (instruction == 0x00EE) {
+        // TODO: Return from subroutine
+        printf("Return from subroutine\n");
+    } else if ((instruction & 0xF000) == 0x1000) {
+        // TODO: Jump to address
+        printf("Jump to address\n");
+    } else if ((instruction & 0xF000) == 0x2000) {
+        // TODO: Call subroutine
+        printf("Call subroutine\n");
+    } else if ((instruction & 0xF000) == 0x3000) {
+        // TODO: Skip instruction if Vx = kk
+        printf("Skip instruction if Vx = kk\n");
+    } else if ((instruction & 0xF000) == 0x4000) {
+        // TODO: Skip instruction if Vx != kk
+        printf("Skip instruction if Vx != kk\n");
+    } else if ((instruction & 0xF000) == 0x5000) {
+        // TODO: Skip instruction if Vx = Vy
+        printf("Skip instruction if Vx = Vy\n");
+    } else if ((instruction & 0xF000) == 0x6000) {
+        // TODO: Set Vx = kk
+        printf("Set Vx = kk\n");
+    } else if ((instruction & 0xF000) == 0x7000) {
+        // TODO: Set Vx += kk
+        printf("Set Vx += kk\n");
+    } else if ((instruction & 0xF000) == 0x8000) {
+        uint16_t last_nibble = instruction & 0x000F;
+        if (last_nibble == 0x0000) {
+            // TODO: Set Vx = Vy
+            printf("Set Vx = Vy\n");
+        } else if (last_nibble == 0x0001) {
+            // TODO: Set Vx = Vx OR Vy
+            printf("Set Vx = Vx OR Vy\n");
+        } else if (last_nibble == 0x0002) {
+            // TODO: Set Vx = Vx AND Vy
+            printf("Set Vx = Vx AND Vy\n");
+        } else if (last_nibble == 0x0003) {
+            // TODO: Set Vx = Vx XOR Vy
+            printf("Set Vx = Vx XOR Vy\n");
+        } else if (last_nibble == 0x0004) {
+            // TODO: Set Vx = Vx + Vy
+            printf("Set Vx = Vx + Vy\n");
+        } else if (last_nibble == 0x0005) {
+            // TODO: Set Vx = Vx - Vy
+            printf("Set Vx = Vx - Vy\n");
+        } else if (last_nibble == 0x0006) {
+            // TODO: Shift Vx right
+            printf("Shift Vx right\n");
+        } else if (last_nibble == 0x0007) {
+            // TODO: Set Vx = Vy - Vx
+            printf("Set Vx = Vy - Vx\n");
+        } else if (last_nibble == 0x000E) {
+            // TODO: Shift Vx left
+            printf("Shift Vx left\n");
+        }
+    } else if ((instruction & 0xF000) == 0x9000) {
+        // TODO: Skip instruction if Vx != Vy
+        printf("Skip instruction if Vx != Vy\n");
+    } else if ((instruction & 0xF000) == 0xA000) {
+        // TODO: Set index register
+        printf("Set index register\n");
+    } else if ((instruction & 0xF000) == 0xB000) {
+        // TODO: Jummp to location + V0
+        printf("Jummp to location + V0\n");
+    } else if ((instruction & 0xF000) == 0xC000) {
+        // TODO: Set Vx = random byte
+        printf("Set Vx = random byte\n");
+    } else if ((instruction & 0xF000) == 0xD000) {
+        // TODO: Draw sprite
+        printf("Draw sprite\n");
+    } else if ((instruction & 0xF000) == 0xE000) {
+        uint16_t last_byte = instruction & 0x00FF;
+        if (last_byte == 0x009E) {
+            // TODO: Skip instruction if key Vx is pressed
+            printf("Skip instruction if key Vx is pressed\n");
+        } else if (last_byte == 0x00A1) {
+            // TODO: Skip instruction if key Vx is not pressed
+            printf("Skip instruction if key Vx is not pressed\n");
+        }
+    } else if ((instruction & 0xF000) == 0xF000) {
+        uint16_t last_byte = instruction & 0x00FF;
+        if (last_byte == 0x0007) {
+            // TODO: Set Vx = delay timer
+            printf("Set Vx = delay timer\n");
+        } else if (last_byte == 0x000A) {
+            // TODO: Wait for keypress
+            printf("Wait for keypress\n");
+        } else if (last_byte == 0x0015) {
+            // TODO: Set delay timer = Vx
+            printf("Set delay timer = Vx\n");
+        } else if (last_byte == 0x0018) {
+            // TODO: Set sound timer = Vx
+            printf("Set sound timer = Vx\n");
+        } else if (last_byte == 0x001E) {
+            // TODO: Add Vx to index register
+            printf("Add Vx to index register\n");
+        } else if (last_byte == 0x0029) {
+            // TODO: Set index register to sprite location
+            printf("Set index register to sprite location\n");
+        } else if (last_byte == 0x0033) {
+            // TODO: Store BCD Vx to memory
+            printf("Store BCD Vx to memory\n");
+        } else if (last_byte == 0x0055) {
+            // TODO: Store registers in memory
+            printf("Store registers in memory\n");
+        } else if (last_byte == 0x0065) {
+            // TODO: Read registers from memory
+            printf("Read registers from memory\n");
+        }
     }
 }
 

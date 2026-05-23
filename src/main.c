@@ -6,6 +6,9 @@ int main(int argc, char *byte[]) {
     struct cpu cpu;
     init_cpu(&cpu);
     load_rom(&cpu, "test.ch8");
+
+    clock_cycle(&cpu);
+
     free_cpu(&cpu);
     return 0;
 }
