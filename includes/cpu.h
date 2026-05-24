@@ -149,7 +149,7 @@ void skip_not_equal_register(struct cpu *cpu, uint16_t instruction);
 /**
  * Set the index register to a given value.
  */
-void load_index(struct cpu *cpu);
+void load_index(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Set the program counter to a given value plus a given offset.
