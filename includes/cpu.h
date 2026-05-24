@@ -159,7 +159,7 @@ void jump_offset(struct cpu *cpu, uint16_t instruction);
 /**
  * Set register to random value AND with a given value.
  */
-void random_value(struct cpu *cpu);
+void random_value(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision.

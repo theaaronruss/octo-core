@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #define MEM_SIZE 4096
 
@@ -32,6 +33,7 @@ static uint8_t char_data[] = {
 };
 
 bool cpu_init(struct cpu *cpu) {
+    srand(time(NULL));
     cpu->memory = (uint8_t *) malloc(MEM_SIZE);
     if (cpu->memory == NULL) {
         printf("Failed to allocate memory\n");
@@ -112,8 +114,7 @@ void cpu_clock_cycle(struct cpu *cpu) {
     } else if ((instruction & 0xF000) == 0xB000) {
         jump_offset(cpu, instruction);
     } else if ((instruction & 0xF000) == 0xC000) {
-        // TODO: Set Vx = random byte
-        printf("Set Vx = random byte\n");
+        random_value(cpu, instruction);
     } else if ((instruction & 0xF000) == 0xD000) {
         // TODO: Draw sprite
         printf("Draw sprite\n");
@@ -314,8 +315,11 @@ void jump_offset(struct cpu *cpu, uint16_t instruction) {
     cpu->pc = address;
 }
 
-void random_value(struct cpu *cpu) {
-    // TODO: Implement
+void random_value(struct cpu *cpu, uint16_t instruction) {
+    int reg = (instruction & 0x0F00) >> 8;
+    uint8_t mask = instruction & 0x00FF;
+    uint8_t value = rand() % 255;
+    cpu->registers[reg] = value & mask;
 }
 
 void draw(struct cpu *cpu) {
