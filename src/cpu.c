@@ -142,8 +142,7 @@ void cpu_clock_cycle(struct cpu *cpu) {
         } else if (last_byte == 0x0029) {
             load_sprite(cpu, instruction);
         } else if (last_byte == 0x0033) {
-            // TODO: Store BCD Vx to memory
-            printf("Store BCD Vx to memory\n");
+            load_bcd(cpu, instruction);
         } else if (last_byte == 0x0055) {
             save_registers(cpu, instruction);
         } else if (last_byte == 0x0065) {
@@ -361,8 +360,12 @@ void load_sprite(struct cpu *cpu, uint16_t instruction) {
     cpu->i = CHAR_ADDR + 5 * digit;
 }
 
-void load_bcd(struct cpu *cpu) {
-    // TODO: Implement
+void load_bcd(struct cpu *cpu, uint16_t instruction) {
+    int reg = (instruction & 0x0F00) >> 8;
+    uint8_t value = cpu->registers[reg];
+    cpu->memory[cpu->i] = value / 100;
+    cpu->memory[cpu->i + 1] = (value / 10) % 10;
+    cpu->memory[cpu->i + 2] = value % 10;
 }
 
 void save_registers(struct cpu *cpu, uint16_t instruction) {

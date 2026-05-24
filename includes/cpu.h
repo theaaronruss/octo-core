@@ -209,7 +209,7 @@ void load_sprite(struct cpu *cpu, uint16_t instruction);
 /**
  * Store BCD representation of a register in memory locations I, I+1, and I+2.
  */
-void load_bcd(struct cpu *cpu);
+void load_bcd(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Store values of registers into memory starting at location stored in index
