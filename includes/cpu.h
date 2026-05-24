@@ -102,7 +102,7 @@ void load_register_to_register(struct cpu *cpu, uint16_t instruction);
 /**
  * OR two registers and store the result into a register.
  */
-void or_registers(struct cpu *cpu);
+void or_registers(struct cpu *cpu, uint16_t instruction);
 
 /**
  * AND two registers and store the result into a register.

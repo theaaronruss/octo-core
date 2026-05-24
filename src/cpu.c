@@ -89,8 +89,7 @@ void cpu_clock_cycle(struct cpu *cpu) {
         if (last_nibble == 0x0000) {
             load_register_to_register(cpu, instruction);
         } else if (last_nibble == 0x0001) {
-            // TODO: Set Vx = Vx OR Vy
-            printf("Set Vx = Vx OR Vy\n");
+            or_registers(cpu, instruction);
         } else if (last_nibble == 0x0002) {
             // TODO: Set Vx = Vx AND Vy
             printf("Set Vx = Vx AND Vy\n");
@@ -234,8 +233,12 @@ void load_register_to_register(struct cpu *cpu, uint16_t instruction) {
     cpu->registers[reg_x] = cpu->registers[reg_y];
 }
 
-void or_registers(struct cpu *cpu) {
-    // TODO: Implement
+void or_registers(struct cpu *cpu, uint16_t instruction) {
+    int reg_x = (instruction & 0x0F00) >> 8;
+    int reg_y = (instruction & 0x00F0) >> 4;
+    uint8_t value_x = cpu->registers[reg_x];
+    uint8_t value_y = cpu->registers[reg_y];
+    cpu->registers[reg_x] = value_x | value_y;
 }
 
 void and_registers(struct cpu *cpu) {
