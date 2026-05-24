@@ -199,12 +199,12 @@ void set_sound_timer(struct cpu *cpu, uint16_t instruction);
 /**
  * Add the value stored in a register to the index register.
  */
-void add_index(struct cpu *cpu);
+void add_index(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Store the location of a sprite into the index register.
  */
-void load_sprite(struct cpu *cpu);
+void load_sprite(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Store BCD representation of a register in memory locations I, I+1, and I+2.

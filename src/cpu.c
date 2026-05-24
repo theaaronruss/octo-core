@@ -138,11 +138,9 @@ void cpu_clock_cycle(struct cpu *cpu) {
         } else if (last_byte == 0x0018) {
             set_sound_timer(cpu, instruction);
         } else if (last_byte == 0x001E) {
-            // TODO: Add Vx to index register
-            printf("Add Vx to index register\n");
+            add_index(cpu, instruction);
         } else if (last_byte == 0x0029) {
-            // TODO: Set index register to sprite location
-            printf("Set index register to sprite location\n");
+            load_sprite(cpu, instruction);
         } else if (last_byte == 0x0033) {
             // TODO: Store BCD Vx to memory
             printf("Store BCD Vx to memory\n");
@@ -354,12 +352,15 @@ void set_sound_timer(struct cpu *cpu, uint16_t instruction) {
     cpu->st = cpu->registers[reg];
 }
 
-void add_index(struct cpu *cpu) {
-    // TODO: Implement
+void add_index(struct cpu *cpu, uint16_t instruction) {
+    int reg = (instruction & 0x0F00) >> 8;
+    cpu->i += cpu->registers[reg];
 }
 
-void load_sprite(struct cpu *cpu) {
-    // TODO: Implement
+void load_sprite(struct cpu *cpu, uint16_t instruction) {
+    int reg = (instruction & 0x0F00) >> 8;
+    int digit = cpu->registers[reg];
+    cpu->i = CHAR_ADDR + 5 * digit;
 }
 
 void load_bcd(struct cpu *cpu) {
