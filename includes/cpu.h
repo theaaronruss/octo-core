@@ -112,7 +112,7 @@ void and_registers(struct cpu *cpu, uint16_t instruction);
 /**
  * XOR two registers and store the result into a register.
  */
-void xor_registers(struct cpu *cpu);
+void xor_registers(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Add two registers and store the result into a register. Set the vF register

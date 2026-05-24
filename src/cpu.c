@@ -93,8 +93,7 @@ void cpu_clock_cycle(struct cpu *cpu) {
         } else if (last_nibble == 0x0002) {
             and_registers(cpu, instruction);
         } else if (last_nibble == 0x0003) {
-            // TODO: Set Vx = Vx XOR Vy
-            printf("Set Vx = Vx XOR Vy\n");
+            xor_registers(cpu, instruction);
         } else if (last_nibble == 0x0004) {
             // TODO: Set Vx = Vx + Vy
             printf("Set Vx = Vx + Vy\n");
@@ -248,8 +247,12 @@ void and_registers(struct cpu *cpu, uint16_t instruction) {
     cpu->registers[reg_x] = value_x & value_y;
 }
 
-void xor_registers(struct cpu *cpu) {
-    // TODO: Implement
+void xor_registers(struct cpu *cpu, uint16_t instruction) {
+    int reg_x = (instruction & 0x0F00) >> 8;
+    int reg_y = (instruction & 0x00F0) >> 4;
+    uint8_t value_x = cpu->registers[reg_x];
+    uint8_t value_y = cpu->registers[reg_y];
+    cpu->registers[reg_x] = value_x ^ value_y;
 }
 
 void add_registers(struct cpu *cpu) {
