@@ -154,7 +154,7 @@ void load_index(struct cpu *cpu, uint16_t instruction);
 /**
  * Set the program counter to a given value plus a given offset.
  */
-void jump_offset(struct cpu *cpu);
+void jump_offset(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Set register to random value AND with a given value.

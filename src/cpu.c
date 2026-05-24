@@ -110,8 +110,7 @@ void cpu_clock_cycle(struct cpu *cpu) {
     } else if ((instruction & 0xF000) == 0xA000) {
         load_index(cpu, instruction);
     } else if ((instruction & 0xF000) == 0xB000) {
-        // TODO: Jummp to location + V0
-        printf("Jummp to location + V0\n");
+        jump_offset(cpu, instruction);
     } else if ((instruction & 0xF000) == 0xC000) {
         // TODO: Set Vx = random byte
         printf("Set Vx = random byte\n");
@@ -317,8 +316,10 @@ void load_index(struct cpu *cpu, uint16_t instruction) {
     cpu->i = value;
 }
 
-void jump_offset(struct cpu *cpu) {
-    // TODO: Implement
+void jump_offset(struct cpu *cpu, uint16_t instruction) {
+    uint16_t address = instruction & 0x0FFF;
+    address += cpu->registers[0];
+    cpu->pc = address;
 }
 
 void random_value(struct cpu *cpu) {
