@@ -64,6 +64,7 @@ void cpu_clock_cycle(struct cpu *cpu) {
     uint8_t msb = cpu->memory[cpu->pc];
     uint8_t lsb = cpu->memory[cpu->pc + 1];
     uint16_t instruction = (msb << 8) | lsb;
+    cpu->pc += 2;
 
     if (instruction == 0x00E0) {
         display_clear();
@@ -74,14 +75,11 @@ void cpu_clock_cycle(struct cpu *cpu) {
     } else if ((instruction & 0xF000) == 0x2000) {
         subroutine_call(cpu, instruction);
     } else if ((instruction & 0xF000) == 0x3000) {
-        // TODO: Skip instruction if Vx = kk
-        printf("Skip instruction if Vx = kk\n");
+        skip_equal_value(cpu, instruction);
     } else if ((instruction & 0xF000) == 0x4000) {
-        // TODO: Skip instruction if Vx != kk
-        printf("Skip instruction if Vx != kk\n");
+        skip_not_equal_value(cpu, instruction);
     } else if ((instruction & 0xF000) == 0x5000) {
-        // TODO: Skip instruction if Vx = Vy
-        printf("Skip instruction if Vx = Vy\n");
+        skip_equal_register(cpu, instruction);
     } else if ((instruction & 0xF000) == 0x6000) {
         // TODO: Set Vx = kk
         printf("Set Vx = kk\n");
@@ -119,8 +117,7 @@ void cpu_clock_cycle(struct cpu *cpu) {
             printf("Shift Vx left\n");
         }
     } else if ((instruction & 0xF000) == 0x9000) {
-        // TODO: Skip instruction if Vx != Vy
-        printf("Skip instruction if Vx != Vy\n");
+        skip_not_equal_register(cpu, instruction);
     } else if ((instruction & 0xF000) == 0xA000) {
         // TODO: Set index register
         printf("Set index register\n");
@@ -194,16 +191,32 @@ void subroutine_call(struct cpu *cpu, uint16_t instruction) {
     cpu->pc = instruction & 0xFFF;
 }
 
-void skip_equal_value(struct cpu *cpu) {
-    // TODO: Implement
+void skip_equal_value(struct cpu *cpu, uint16_t instruction) {
+    uint8_t value = instruction & 0x00FF;
+    int reg = (instruction & 0x0F00) >> 8;
+    uint8_t reg_value = cpu->registers[reg];
+    if (reg_value == value) {
+        cpu->pc += 2;
+    }
 }
 
-void skip_not_equal_value(struct cpu *cpu) {
-    // TODO: Implement
+void skip_not_equal_value(struct cpu *cpu, uint16_t instruction) {
+    uint8_t value = instruction & 0x00FF;
+    int reg = (instruction & 0x0F00) >> 8;
+    uint8_t reg_value = cpu->registers[reg];
+    if (reg_value != value) {
+        cpu->pc += 2;
+    }
 }
 
-void skip_equal_register(struct cpu *cpu) {
-    // TODO: Implement
+void skip_equal_register(struct cpu *cpu, uint16_t instruction) {
+    int reg_x = (instruction & 0x0F00) >> 8;
+    int reg_y = (instruction & 0x00F0) >> 4;
+    uint8_t value_x = cpu->registers[reg_x];
+    uint8_t value_y = cpu->registers[reg_y];
+    if (value_x == value_y) {
+        cpu->pc += 2;
+    }
 }
 
 void load_value_to_register(struct cpu *cpu) {
@@ -250,8 +263,14 @@ void shift_register_left(struct cpu *cpu) {
     // TODO: Implement
 }
 
-void skip_not_equal_register(struct cpu *cpu) {
-    // TODO: Implement
+void skip_not_equal_register(struct cpu *cpu, uint16_t instruction) {
+    int reg_x = (instruction & 0x0F00) >> 8;
+    int reg_y = (instruction & 0x00F0) >> 4;
+    uint8_t value_x = cpu->registers[reg_x];
+    uint8_t value_y = cpu->registers[reg_y];
+    if (value_x != value_y) {
+        cpu->pc += 2;
+    }
 }
 
 void load_index(struct cpu *cpu) {

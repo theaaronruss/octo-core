@@ -6,22 +6,7 @@
 
 struct cpu {
     // Registers
-    uint8_t v0;
-    uint8_t v1;
-    uint8_t v2;
-    uint8_t v3;
-    uint8_t v4;
-    uint8_t v5;
-    uint8_t v6;
-    uint8_t v7;
-    uint8_t v8;
-    uint8_t v9;
-    uint8_t vA;
-    uint8_t vB;
-    uint8_t vC;
-    uint8_t vD;
-    uint8_t vE;
-    uint8_t vF;
+    uint8_t registers[16];
     int16_t i;
     uint8_t dt;
     uint8_t st;
@@ -87,17 +72,17 @@ void subroutine_call(struct cpu *cpu, uint16_t instruction);
 /**
  * Skip next instruction if Vx = kk.
  */
-void skip_equal_value(struct cpu *cpu);
+void skip_equal_value(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Skip next instruction if Vx != kk.
  */
-void skip_not_equal_value(struct cpu *cpu);
+void skip_not_equal_value(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Skip next instruction if Vx = Vy.
  */
-void skip_equal_register(struct cpu *cpu);
+void skip_equal_register(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Load byte into a register.
@@ -159,7 +144,7 @@ void shift_register_left(struct cpu *cpu);
 /**
  * Skip next instruction if Vx != Vy.
  */
-void skip_not_equal_register(struct cpu *cpu);
+void skip_not_equal_register(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Set the index register to a given value.
