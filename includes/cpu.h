@@ -107,7 +107,7 @@ void or_registers(struct cpu *cpu, uint16_t instruction);
 /**
  * AND two registers and store the result into a register.
  */
-void and_registers(struct cpu *cpu);
+void and_registers(struct cpu *cpu, uint16_t instruction);
 
 /**
  * XOR two registers and store the result into a register.
