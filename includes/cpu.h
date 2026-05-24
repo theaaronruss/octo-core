@@ -177,9 +177,9 @@ void skip_key_pressed(struct cpu *cpu);
 void skip_key_not_pressed(struct cpu *cpu);
 
 /**
- * Set delay timer to a given value.
+ * Load delay timer value into a register.
  */
-void load_delay_timer(struct cpu *cpu);
+void load_delay_timer(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Wait for a key press, store the value of the key in a register.
@@ -189,7 +189,7 @@ void load_key(struct cpu *cpu);
 /**
  * Set delay timer to a value in a given register.
  */
-void set_delay_timer(struct cpu *cpu);
+void set_delay_timer(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Set sound timer to a value in a given register.

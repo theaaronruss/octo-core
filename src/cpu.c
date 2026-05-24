@@ -129,14 +129,12 @@ void cpu_clock_cycle(struct cpu *cpu) {
     } else if ((instruction & 0xF000) == 0xF000) {
         uint16_t last_byte = instruction & 0x00FF;
         if (last_byte == 0x0007) {
-            // TODO: Set Vx = delay timer
-            printf("Set Vx = delay timer\n");
+            load_delay_timer(cpu, instruction);
         } else if (last_byte == 0x000A) {
             // TODO: Wait for keypress
             printf("Wait for keypress\n");
         } else if (last_byte == 0x0015) {
-            // TODO: Set delay timer = Vx
-            printf("Set delay timer = Vx\n");
+            set_delay_timer(cpu, instruction);
         } else if (last_byte == 0x0018) {
             // TODO: Set sound timer = Vx
             printf("Set sound timer = Vx\n");
@@ -338,16 +336,18 @@ void skip_key_not_pressed(struct cpu *cpu) {
     // TODO: Implement
 }
 
-void load_delay_timer(struct cpu *cpu) {
-    // TODO: Implement
+void load_delay_timer(struct cpu *cpu, uint16_t instruction) {
+    int reg = (instruction & 0x0F00) >> 8;
+    cpu->registers[reg] = cpu->dt;
 }
 
 void load_key(struct cpu *cpu) {
     // TODO: Implement
 }
 
-void set_delay_timer(struct cpu *cpu) {
-    // TODO: Implement
+void set_delay_timer(struct cpu *cpu, uint16_t instruction) {
+    int reg = (instruction & 0x0F00) >> 8;
+    cpu->dt = cpu->registers[reg];
 }
 
 void set_sound_timer(struct cpu *cpu) {
