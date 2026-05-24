@@ -66,13 +66,11 @@ void cpu_clock_cycle(struct cpu *cpu) {
 
     if (instruction == 0x00E0) {
         display_clear();
-        printf("Clear display\n");
     } else if (instruction == 0x00EE) {
         // TODO: Return from subroutine
         printf("Return from subroutine\n");
     } else if ((instruction & 0xF000) == 0x1000) {
-        // TODO: Jump to address
-        printf("Jump to address\n");
+        jump(cpu, instruction);
     } else if ((instruction & 0xF000) == 0x2000) {
         // TODO: Call subroutine
         printf("Call subroutine\n");
