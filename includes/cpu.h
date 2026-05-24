@@ -44,12 +44,12 @@ struct cpu {
  *
  * @return true if successful, otherwise false
  */
-bool init_cpu(struct cpu *cpu);
+bool cpu_init(struct cpu *cpu);
 
 /**
  * Free the resources from the CPU. Does nothing if cpu is NULL.
  */
-void free_cpu(struct cpu *cpu);
+void cpu_free(struct cpu *cpu);
 
 /**
  * Load ROM contents into memory at 0x200.
@@ -57,12 +57,12 @@ void free_cpu(struct cpu *cpu);
  * @param filename Filename of the ROM to load.
  * @return true if successful, otherwise false
  */
-bool load_rom(struct cpu *cpu, const char *filename);
+bool cpu_load_rom(struct cpu *cpu, const char *filename);
 
 /**
  * Retrieve next instruction and execute it.
  */
-void clock_cycle(struct cpu *cpu);
+void cpu_clock_cycle(struct cpu *cpu);
 
 /**
  * Clear the display.

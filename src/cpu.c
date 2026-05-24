@@ -31,7 +31,7 @@ static uint8_t char_data[] = {
     0xF0, 0x80, 0xF0, 0x80, 0x80, // F
 };
 
-bool init_cpu(struct cpu *cpu) {
+bool cpu_init(struct cpu *cpu) {
     cpu->memory = (uint8_t *) malloc(MEM_SIZE);
     if (cpu->memory == NULL) {
         printf("Failed to allocate memory\n");
@@ -42,14 +42,14 @@ bool init_cpu(struct cpu *cpu) {
     return true;
 }
 
-void free_cpu(struct cpu *cpu) {
+void cpu_free(struct cpu *cpu) {
     if (cpu == NULL) {
         return;
     }
     free(cpu->memory);
 }
 
-bool load_rom(struct cpu *cpu, const char *filename) {
+bool cpu_load_rom(struct cpu *cpu, const char *filename) {
     FILE *file = fopen(filename, "rb");
     if (file == NULL) {
         return false;
@@ -59,7 +59,7 @@ bool load_rom(struct cpu *cpu, const char *filename) {
     return true;
 }
 
-void clock_cycle(struct cpu *cpu) {
+void cpu_clock_cycle(struct cpu *cpu) {
     uint8_t msb = cpu->memory[cpu->pc];
     uint8_t lsb = cpu->memory[cpu->pc + 1];
     uint16_t instruction = (msb << 8) | lsb;

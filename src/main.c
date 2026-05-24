@@ -12,15 +12,15 @@ int main(int argc, char *byte[]) {
     }
     display_init();
     struct cpu cpu = {};
-    init_cpu(&cpu);
-    load_rom(&cpu, "test.ch8");
+    cpu_init(&cpu);
+    cpu_load_rom(&cpu, "test.ch8");
 
-    clock_cycle(&cpu);
+    cpu_clock_cycle(&cpu);
     while (!window_closing) {
         display_update();
     }
     
-    free_cpu(&cpu);
+    cpu_free(&cpu);
     display_free();
     SDL_Quit();
     return 0;
