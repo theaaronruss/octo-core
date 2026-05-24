@@ -82,7 +82,7 @@ void jump(struct cpu *cpu, uint16_t instruction);
 /**
  * Call subroutine at an address.
  */
-void call(struct cpu *cpu);
+void subroutine_call(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Skip next instruction if Vx = kk.

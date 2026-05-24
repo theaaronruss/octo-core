@@ -37,6 +37,7 @@ bool cpu_init(struct cpu *cpu) {
         printf("Failed to allocate memory\n");
         return false;
     }
+    cpu->sp = 0;
     cpu->pc = ROM_ADDR;
     memcpy(cpu->memory + CHAR_ADDR, char_data, 5 * 16);
     return true;
@@ -67,13 +68,11 @@ void cpu_clock_cycle(struct cpu *cpu) {
     if (instruction == 0x00E0) {
         display_clear();
     } else if (instruction == 0x00EE) {
-        // TODO: Return from subroutine
-        printf("Return from subroutine\n");
+        subroutine_return(cpu);
     } else if ((instruction & 0xF000) == 0x1000) {
         jump(cpu, instruction);
     } else if ((instruction & 0xF000) == 0x2000) {
-        // TODO: Call subroutine
-        printf("Call subroutine\n");
+        subroutine_call(cpu, instruction);
     } else if ((instruction & 0xF000) == 0x3000) {
         // TODO: Skip instruction if Vx = kk
         printf("Skip instruction if Vx = kk\n");
@@ -181,15 +180,18 @@ void clear_display(struct cpu *cpu) {
 }
 
 void subroutine_return(struct cpu *cpu) {
-    // TODO: Implement
+    cpu->sp--;
+    cpu->pc = cpu->stack[cpu->sp];
 }
 
 void jump(struct cpu *cpu, uint16_t instruction) {
     cpu->pc = instruction & 0x0FFF;
 }
 
-void call(struct cpu *cpu) {
-    // TODO: Implement
+void subroutine_call(struct cpu *cpu, uint16_t instruction) {
+    cpu->stack[cpu->sp] = cpu->pc;
+    cpu->sp++;
+    cpu->pc = instruction & 0xFFF;
 }
 
 void skip_equal_value(struct cpu *cpu) {
