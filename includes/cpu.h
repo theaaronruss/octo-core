@@ -215,13 +215,13 @@ void load_bcd(struct cpu *cpu);
  * Store values of registers into memory starting at location stored in index
  * register.
  */
-void save_registers(struct cpu *cpu);
+void save_registers(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Read memory starting at location I and store the values into all of the
  * registers.
  */
-void load_registers(struct cpu *cpu);
+void load_registers(struct cpu *cpu, uint16_t instruction);
 
 #endif
 

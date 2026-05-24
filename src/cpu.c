@@ -145,11 +145,9 @@ void cpu_clock_cycle(struct cpu *cpu) {
             // TODO: Store BCD Vx to memory
             printf("Store BCD Vx to memory\n");
         } else if (last_byte == 0x0055) {
-            // TODO: Store registers in memory
-            printf("Store registers in memory\n");
+            save_registers(cpu, instruction);
         } else if (last_byte == 0x0065) {
-            // TODO: Read registers from memory
-            printf("Read registers from memory\n");
+            load_registers(cpu, instruction);
         }
     }
 }
@@ -367,10 +365,13 @@ void load_bcd(struct cpu *cpu) {
     // TODO: Implement
 }
 
-void save_registers(struct cpu *cpu) {
-    // TODO: Implement
+void save_registers(struct cpu *cpu, uint16_t instruction) {
+    int reg = (instruction & 0x0F00) >> 8;
+    memcpy(cpu->memory + cpu->i, cpu->registers, reg);
 }
 
-void load_registers(struct cpu *cpu) {
-    // TODO: Implement
+void load_registers(struct cpu *cpu, uint16_t instruction) {
+    int reg = (instruction & 0x0F00) >> 8;
+    memcpy(cpu->registers, cpu->memory + cpu->i, reg);
 }
+
