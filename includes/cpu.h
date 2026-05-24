@@ -92,7 +92,7 @@ void load_value_to_register(struct cpu *cpu, uint16_t instruction);
 /**
  * Add value to register.
  */
-void add_value_to_register(struct cpu *cpu);
+void add_value_to_register(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Store the value of one register into another.

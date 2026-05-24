@@ -83,8 +83,7 @@ void cpu_clock_cycle(struct cpu *cpu) {
     } else if ((instruction & 0xF000) == 0x6000) {
         load_value_to_register(cpu, instruction);
     } else if ((instruction & 0xF000) == 0x7000) {
-        // TODO: Set Vx += kk
-        printf("Set Vx += kk\n");
+        add_value_to_register(cpu, instruction);
     } else if ((instruction & 0xF000) == 0x8000) {
         uint16_t last_nibble = instruction & 0x000F;
         if (last_nibble == 0x0000) {
@@ -223,8 +222,10 @@ void load_value_to_register(struct cpu *cpu, uint16_t instruction) {
     cpu->registers[reg] = value;
 }
 
-void add_value_to_register(struct cpu *cpu) {
-    // TODO: Implement
+void add_value_to_register(struct cpu *cpu, uint16_t instruction) {
+    int reg = (instruction & 0x0F00) >> 8;
+    uint8_t value = instruction & 0x00FF;
+    cpu->registers[reg] += value;
 }
 
 void load_register_to_register(struct cpu *cpu, uint16_t instruction) {
