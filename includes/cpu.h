@@ -118,7 +118,7 @@ void xor_registers(struct cpu *cpu, uint16_t instruction);
  * Add two registers and store the result into a register. Set the vF register
  * if there is a carry.
  */
-void add_registers(struct cpu *cpu);
+void add_registers(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Subtract two registers and store the result into a register. Set the vF
