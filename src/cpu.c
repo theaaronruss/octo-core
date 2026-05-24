@@ -97,14 +97,12 @@ void cpu_clock_cycle(struct cpu *cpu) {
         } else if (last_nibble == 0x0004) {
             add_registers(cpu, instruction);
         } else if (last_nibble == 0x0005) {
-            // TODO: Set Vx = Vx - Vy
-            printf("Set Vx = Vx - Vy\n");
+            sub_registers(cpu, instruction);
         } else if (last_nibble == 0x0006) {
             // TODO: Shift Vx right
             printf("Shift Vx right\n");
         } else if (last_nibble == 0x0007) {
-            // TODO: Set Vx = Vy - Vx
-            printf("Set Vx = Vy - Vx\n");
+            sub_registers_reverse(cpu, instruction);
         } else if (last_nibble == 0x000E) {
             // TODO: Shift Vx left
             printf("Shift Vx left\n");
@@ -267,16 +265,34 @@ void add_registers(struct cpu *cpu, uint16_t instruction) {
     cpu->registers[reg_x] = value_x + value_y;
 }
 
-void sub_registers(struct cpu *cpu) {
-    // TODO: Implement
+void sub_registers(struct cpu *cpu, uint16_t instruction) {
+    int reg_x = (instruction & 0x0F00) >> 8;
+    int reg_y = (instruction & 0x00F0) >> 4;
+    uint8_t value_x = cpu->registers[reg_x];
+    uint8_t value_y = cpu->registers[reg_y];
+    if (value_x > value_y) {
+        cpu->registers[0xF] = 1;
+    } else {
+        cpu->registers[0xF] = 0;
+    }
+    cpu->registers[reg_x] = value_x - value_y;
 }
 
 void shift_register_right(struct cpu *cpu) {
     // TODO: Implement
 }
 
-void sub_registers_reverse(struct cpu *cpu) {
-    // TODO: Implement
+void sub_registers_reverse(struct cpu *cpu, uint16_t instruction) {
+    int reg_x = (instruction & 0x0F00) >> 8;
+    int reg_y = (instruction & 0x00F0) >> 4;
+    uint8_t value_x = cpu->registers[reg_x];
+    uint8_t value_y = cpu->registers[reg_y];
+    if (value_y > value_x) {
+        cpu->registers[0xF] = 1;
+    } else {
+        cpu->registers[0xF] = 0;
+    }
+    cpu->registers[reg_x] = value_y - value_x;
 }
 
 void shift_register_left(struct cpu *cpu) {

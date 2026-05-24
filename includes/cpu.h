@@ -124,7 +124,7 @@ void add_registers(struct cpu *cpu, uint16_t instruction);
  * Subtract two registers and store the result into a register. Set the vF
  * register if there is no borrow.
  */
-void sub_registers(struct cpu *cpu);
+void sub_registers(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Shift a register to the right.
@@ -134,7 +134,7 @@ void shift_register_right(struct cpu *cpu);
 /**
  * Subtract two registers and store the result into a register.
  */
-void sub_registers_reverse(struct cpu *cpu);
+void sub_registers_reverse(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Shift a register to the left.
