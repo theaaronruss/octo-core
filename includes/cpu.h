@@ -194,7 +194,7 @@ void set_delay_timer(struct cpu *cpu, uint16_t instruction);
 /**
  * Set sound timer to a value in a given register.
  */
-void set_sound_timer(struct cpu *cpu);
+void set_sound_timer(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Add the value stored in a register to the index register.

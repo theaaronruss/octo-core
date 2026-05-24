@@ -136,8 +136,7 @@ void cpu_clock_cycle(struct cpu *cpu) {
         } else if (last_byte == 0x0015) {
             set_delay_timer(cpu, instruction);
         } else if (last_byte == 0x0018) {
-            // TODO: Set sound timer = Vx
-            printf("Set sound timer = Vx\n");
+            set_sound_timer(cpu, instruction);
         } else if (last_byte == 0x001E) {
             // TODO: Add Vx to index register
             printf("Add Vx to index register\n");
@@ -350,8 +349,9 @@ void set_delay_timer(struct cpu *cpu, uint16_t instruction) {
     cpu->dt = cpu->registers[reg];
 }
 
-void set_sound_timer(struct cpu *cpu) {
-    // TODO: Implement
+void set_sound_timer(struct cpu *cpu, uint16_t instruction) {
+    int reg = (instruction & 0x0F00) >> 8;
+    cpu->st = cpu->registers[reg];
 }
 
 void add_index(struct cpu *cpu) {
