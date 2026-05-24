@@ -129,7 +129,7 @@ void sub_registers(struct cpu *cpu, uint16_t instruction);
 /**
  * Shift a register to the right.
  */
-void shift_register_right(struct cpu *cpu);
+void shift_register_right(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Subtract two registers and store the result into a register.
@@ -139,7 +139,7 @@ void sub_registers_reverse(struct cpu *cpu, uint16_t instruction);
 /**
  * Shift a register to the left.
  */
-void shift_register_left(struct cpu *cpu);
+void shift_register_left(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Skip next instruction if Vx != Vy.

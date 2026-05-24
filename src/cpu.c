@@ -99,13 +99,11 @@ void cpu_clock_cycle(struct cpu *cpu) {
         } else if (last_nibble == 0x0005) {
             sub_registers(cpu, instruction);
         } else if (last_nibble == 0x0006) {
-            // TODO: Shift Vx right
-            printf("Shift Vx right\n");
+            shift_register_right(cpu, instruction);
         } else if (last_nibble == 0x0007) {
             sub_registers_reverse(cpu, instruction);
         } else if (last_nibble == 0x000E) {
-            // TODO: Shift Vx left
-            printf("Shift Vx left\n");
+            shift_register_left(cpu, instruction);
         }
     } else if ((instruction & 0xF000) == 0x9000) {
         skip_not_equal_register(cpu, instruction);
@@ -278,8 +276,11 @@ void sub_registers(struct cpu *cpu, uint16_t instruction) {
     cpu->registers[reg_x] = value_x - value_y;
 }
 
-void shift_register_right(struct cpu *cpu) {
-    // TODO: Implement
+void shift_register_right(struct cpu *cpu, uint16_t instruction) {
+    int reg = (instruction & 0x0F00) >> 8;
+    uint8_t value = cpu->registers[reg];
+    cpu->registers[0xF] = value & 0x01;
+    cpu->registers[reg] >>= 1;
 }
 
 void sub_registers_reverse(struct cpu *cpu, uint16_t instruction) {
@@ -295,8 +296,11 @@ void sub_registers_reverse(struct cpu *cpu, uint16_t instruction) {
     cpu->registers[reg_x] = value_y - value_x;
 }
 
-void shift_register_left(struct cpu *cpu) {
-    // TODO: Implement
+void shift_register_left(struct cpu *cpu, uint16_t instruction) {
+    int reg = (instruction & 0x0F00) >> 8;
+    uint8_t value = cpu->registers[reg];
+    cpu->registers[0xF] = value & 0x80;
+    cpu->registers[reg] <<= 1;
 }
 
 void skip_not_equal_register(struct cpu *cpu, uint16_t instruction) {
