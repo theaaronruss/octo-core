@@ -87,7 +87,7 @@ void skip_equal_register(struct cpu *cpu, uint16_t instruction);
 /**
  * Load byte into a register.
  */
-void load_value_to_register(struct cpu *cpu);
+void load_value_to_register(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Add value to register.
@@ -97,7 +97,7 @@ void add_value_to_register(struct cpu *cpu);
 /**
  * Store the value of one register into another.
  */
-void load_register_to_register(struct cpu *cpu);
+void load_register_to_register(struct cpu *cpu, uint16_t instruction);
 
 /**
  * OR two registers and store the result into a register.

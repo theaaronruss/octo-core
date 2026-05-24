@@ -81,16 +81,14 @@ void cpu_clock_cycle(struct cpu *cpu) {
     } else if ((instruction & 0xF000) == 0x5000) {
         skip_equal_register(cpu, instruction);
     } else if ((instruction & 0xF000) == 0x6000) {
-        // TODO: Set Vx = kk
-        printf("Set Vx = kk\n");
+        load_value_to_register(cpu, instruction);
     } else if ((instruction & 0xF000) == 0x7000) {
         // TODO: Set Vx += kk
         printf("Set Vx += kk\n");
     } else if ((instruction & 0xF000) == 0x8000) {
         uint16_t last_nibble = instruction & 0x000F;
         if (last_nibble == 0x0000) {
-            // TODO: Set Vx = Vy
-            printf("Set Vx = Vy\n");
+            load_register_to_register(cpu, instruction);
         } else if (last_nibble == 0x0001) {
             // TODO: Set Vx = Vx OR Vy
             printf("Set Vx = Vx OR Vy\n");
@@ -219,16 +217,20 @@ void skip_equal_register(struct cpu *cpu, uint16_t instruction) {
     }
 }
 
-void load_value_to_register(struct cpu *cpu) {
-    // TODO: Implement
+void load_value_to_register(struct cpu *cpu, uint16_t instruction) {
+    int reg = (instruction & 0x0F00) >> 8;
+    uint8_t value = instruction & 0x00FF;
+    cpu->registers[reg] = value;
 }
 
 void add_value_to_register(struct cpu *cpu) {
     // TODO: Implement
 }
 
-void load_register_to_register(struct cpu *cpu) {
-    // TODO: Implement
+void load_register_to_register(struct cpu *cpu, uint16_t instruction) {
+    int reg_x = (instruction & 0x0F00) >> 8;
+    int reg_y = (instruction & 0x00F0) >> 4;
+    cpu->registers[reg_x] = cpu->registers[reg_y];
 }
 
 void or_registers(struct cpu *cpu) {
