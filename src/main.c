@@ -1,5 +1,6 @@
 #include "SDL3/SDL.h" // IWYU pragma: keep
 #include "SDL3/SDL_main.h" // IWYU pragma: keep
+#include "cpu.h"
 #include "display.h"
 #include <stdbool.h>
 
@@ -10,12 +11,16 @@ int main(int argc, char *byte[]) {
         return 1;
     }
     display_init();
+    struct cpu cpu = {};
+    init_cpu(&cpu);
+    load_rom(&cpu, "test.ch8");
 
+    clock_cycle(&cpu);
     while (!window_closing) {
-        display_clear();
         display_update();
     }
     
+    free_cpu(&cpu);
     display_free();
     SDL_Quit();
     return 0;

@@ -9,6 +9,8 @@ static SDL_Texture *texture;
 static SDL_FRect tex_bounds = { 0, 0, 64, 32 };
 static SDL_FRect display_bounds = { 0, 0, 640, 320 };
 
+static SDL_Color clear_color = { 0xFF, 0x00, 0x00, 0xFF };
+
 bool window_closing = false;
 
 bool display_init() {
@@ -67,7 +69,13 @@ void display_update() {
 }
 
 void display_clear() {
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+    SDL_SetRenderDrawColor(
+            renderer,
+            clear_color.r,
+            clear_color.g,
+            clear_color.b,
+            clear_color.a
+    );
     SDL_RenderFillRect(renderer, &tex_bounds);
 }
 

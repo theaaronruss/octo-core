@@ -1,4 +1,5 @@
 #include "cpu.h"
+#include "display.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -64,7 +65,7 @@ void clock_cycle(struct cpu *cpu) {
     uint16_t instruction = (msb << 8) | lsb;
 
     if (instruction == 0x00E0) {
-        // TODO: Clear display
+        display_clear();
         printf("Clear display\n");
     } else if (instruction == 0x00EE) {
         // TODO: Return from subroutine
@@ -178,7 +179,7 @@ void clock_cycle(struct cpu *cpu) {
 }
 
 void clear_display(struct cpu *cpu) {
-    // TODO: Implement
+    display_clear();
 }
 
 void subroutine_return(struct cpu *cpu) {
