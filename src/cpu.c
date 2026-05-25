@@ -65,6 +65,13 @@ bool cpu_load_rom(struct cpu *cpu, const char *filename) {
 }
 
 void cpu_clock_cycle(struct cpu *cpu) {
+    if (cpu->dt > 0) {
+        cpu->dt--;
+    }
+    if (cpu->st > 0) {
+        cpu->st--;
+    }
+
     uint8_t msb = cpu->memory[cpu->pc];
     uint8_t lsb = cpu->memory[cpu->pc + 1];
     uint16_t instruction = (msb << 8) | lsb;
@@ -221,6 +228,7 @@ void or_registers(struct cpu *cpu, uint16_t instruction) {
     uint8_t value_x = cpu->registers[reg_x];
     uint8_t value_y = cpu->registers[reg_y];
     cpu->registers[reg_x] = value_x | value_y;
+    cpu->registers[0xF] = 0;
 }
 
 void and_registers(struct cpu *cpu, uint16_t instruction) {
@@ -229,6 +237,7 @@ void and_registers(struct cpu *cpu, uint16_t instruction) {
     uint8_t value_x = cpu->registers[reg_x];
     uint8_t value_y = cpu->registers[reg_y];
     cpu->registers[reg_x] = value_x & value_y;
+    cpu->registers[0xF] = 0;
 }
 
 void xor_registers(struct cpu *cpu, uint16_t instruction) {
@@ -237,6 +246,7 @@ void xor_registers(struct cpu *cpu, uint16_t instruction) {
     uint8_t value_x = cpu->registers[reg_x];
     uint8_t value_y = cpu->registers[reg_y];
     cpu->registers[reg_x] = value_x ^ value_y;
+    cpu->registers[0xF] = 0;
 }
 
 void add_registers(struct cpu *cpu, uint16_t instruction) {
@@ -266,9 +276,10 @@ void sub_registers(struct cpu *cpu, uint16_t instruction) {
 }
 
 void shift_register_right(struct cpu *cpu, uint16_t instruction) {
-    int reg = (instruction & 0x0F00) >> 8;
-    uint8_t value = cpu->registers[reg];
-    cpu->registers[reg] >>= 1;
+    int reg_x = (instruction & 0x0F00) >> 8;
+    int reg_y = (instruction & 0x00F0) >> 4;
+    uint8_t value = cpu->registers[reg_y];
+    cpu->registers[reg_x] = value >> 1;
     cpu->registers[0xF] = value & 0x01;
 }
 
@@ -286,9 +297,10 @@ void sub_registers_reverse(struct cpu *cpu, uint16_t instruction) {
 }
 
 void shift_register_left(struct cpu *cpu, uint16_t instruction) {
-    int reg = (instruction & 0x0F00) >> 8;
-    uint8_t value = cpu->registers[reg];
-    cpu->registers[reg] <<= 1;
+    int reg_x = (instruction & 0x0F00) >> 8;
+    int reg_y = (instruction & 0x00F0) >> 4;
+    uint8_t value = cpu->registers[reg_y];
+    cpu->registers[reg_x] = value << 1;
     cpu->registers[0xF] = value >> 7;
 }
 
@@ -398,10 +410,12 @@ void load_bcd(struct cpu *cpu, uint16_t instruction) {
 void save_registers(struct cpu *cpu, uint16_t instruction) {
     int reg = (instruction & 0x0F00) >> 8;
     memcpy(cpu->memory + cpu->i, cpu->registers, reg + 1);
+    cpu->i += reg + 1;
 }
 
 void load_registers(struct cpu *cpu, uint16_t instruction) {
     int reg = (instruction & 0x0F00) >> 8;
     memcpy(cpu->registers, cpu->memory + cpu->i, reg + 1);
+    cpu->i += reg + 1;
 }
 
