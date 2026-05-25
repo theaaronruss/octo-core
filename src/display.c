@@ -115,15 +115,22 @@ void display_clear() {
 }
 
 bool display_draw_sprite(uint8_t *memory, int bytes, int draw_x, int draw_y) {
+    draw_x %= WIDTH;
+    draw_y %= HEIGHT;
+
     bool collision = false;
     for (int y = 0; y < bytes; y++) {
+        int pixel_y = draw_y + y;
+        if (pixel_y >= HEIGHT) break;
         uint8_t row = memory[y];
         for (int x = 0; x < 8; x++) {
-            int i = (draw_y + y) * WIDTH + x + draw_x;
-            if (pixels[i]) {
+            int pixel_x = draw_x + x;
+            if (pixel_x >= WIDTH) break;
+            int i = pixel_y * WIDTH + pixel_x;
+            if (pixels[i] && (row & 0x80) >> 7) {
                 collision = true;
             }
-            pixels[i] ^= (row & 0x80);
+            pixels[i] ^= (row & 0x80) >> 7;
             row <<= 1;
         }
     }
