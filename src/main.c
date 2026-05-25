@@ -15,13 +15,8 @@ int main(int argc, char *byte[]) {
     cpu_init(&cpu);
     cpu_load_rom(&cpu, "test.ch8");
 
-    printf("Address: %X\n", cpu.pc);
-    cpu_clock_cycle(&cpu);
-    printf("Address: %X\n", cpu.pc);
-    cpu_clock_cycle(&cpu);
-    printf("Address: %X\n", cpu.pc);
-
     while (!window_closing) {
+        cpu_clock_cycle(&cpu);
         display_update();
     }
     

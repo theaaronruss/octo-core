@@ -398,11 +398,11 @@ void load_bcd(struct cpu *cpu, uint16_t instruction) {
 
 void save_registers(struct cpu *cpu, uint16_t instruction) {
     int reg = (instruction & 0x0F00) >> 8;
-    memcpy(cpu->memory + cpu->i, cpu->registers, reg);
+    memcpy(cpu->memory + cpu->i, cpu->registers, reg + 1);
 }
 
 void load_registers(struct cpu *cpu, uint16_t instruction) {
     int reg = (instruction & 0x0F00) >> 8;
-    memcpy(cpu->registers, cpu->memory + cpu->i, reg);
+    memcpy(cpu->registers, cpu->memory + cpu->i, reg + 1);
 }
 
