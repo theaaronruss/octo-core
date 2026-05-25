@@ -2,14 +2,21 @@
 #include "display.h"
 #include <stdbool.h>
 
+#define WIDTH 64
+#define HEIGHT 32
+#define DISPLAY_WIDTH WIDTH * 10
+#define DISPLAY_HEIGHT HEIGHT * 10
+
 static SDL_Window *window;
 static SDL_Renderer *renderer;
 static SDL_Texture *texture;
+static uint8_t pixels[WIDTH * HEIGHT];
 
-static SDL_FRect tex_bounds = { 0, 0, 64, 32 };
-static SDL_FRect display_bounds = { 0, 0, 640, 320 };
+static SDL_FRect tex_bounds = { 0, 0, WIDTH, HEIGHT };
+static SDL_FRect display_bounds = { 0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT };
 
-static SDL_Color clear_color = { 0xFF, 0x00, 0x00, 0xFF };
+static SDL_Color off_color = { 0x1C, 0x1D, 0x1E, 0xFF };
+static SDL_Color on_color = { 0xA7, 0xC9, 0xA1, 0xFF };
 
 bool window_closing = false;
 
@@ -19,7 +26,7 @@ bool display_init() {
         return true;
     }
 
-    window = SDL_CreateWindow("OctoCore", 640, 320, 0);
+    window = SDL_CreateWindow("OctoCore", DISPLAY_WIDTH, DISPLAY_HEIGHT, 0);
     if (window == NULL) {
         return false;
     }
@@ -30,8 +37,15 @@ bool display_init() {
         window = NULL;
         return false;
     }
+    SDL_SetDefaultTextureScaleMode(renderer, SDL_SCALEMODE_NEAREST);
 
-    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_TARGET,  64, 32);
+    texture = SDL_CreateTexture(
+            renderer,
+            SDL_PIXELFORMAT_RGB24,
+            SDL_TEXTUREACCESS_TARGET,
+            64,
+            32
+    );
     if (texture == NULL) {
         SDL_DestroyRenderer(renderer);
         renderer = NULL;
@@ -55,6 +69,31 @@ void display_free() {
     window = NULL;
 }
 
+static void update_texture() {
+    for (int i = 0; i < WIDTH * HEIGHT; i++) {
+        int x = i % WIDTH;
+        int y = i / WIDTH;
+        if (pixels[i]) {
+            SDL_SetRenderDrawColor(
+                renderer,
+                on_color.r,
+                on_color.g,
+                on_color.b,
+                on_color.a
+            );
+        } else {
+            SDL_SetRenderDrawColor(
+                renderer,
+                off_color.r,
+                off_color.g,
+                off_color.b,
+                off_color.a
+            );
+        }
+        SDL_RenderPoint(renderer, x, y);
+    }
+}
+
 void display_update() {
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
@@ -62,6 +101,7 @@ void display_update() {
             window_closing = true;
         }
     }
+    update_texture();
     SDL_SetRenderTarget(renderer, NULL);
     SDL_RenderTexture(renderer, texture, &tex_bounds, &display_bounds);
     SDL_RenderPresent(renderer);
@@ -69,13 +109,24 @@ void display_update() {
 }
 
 void display_clear() {
-    SDL_SetRenderDrawColor(
-            renderer,
-            clear_color.r,
-            clear_color.g,
-            clear_color.b,
-            clear_color.a
-    );
-    SDL_RenderFillRect(renderer, &tex_bounds);
+    for (int i = 0; i < WIDTH * HEIGHT; i++) {
+        pixels[i] = 0;
+    }
+}
+
+bool display_draw_sprite(uint8_t *memory, int bytes, int draw_x, int draw_y) {
+    bool collision = false;
+    for (int y = 0; y < bytes; y++) {
+        uint8_t row = memory[y];
+        for (int x = 0; x < 8; x++) {
+            int i = (draw_y + y) * WIDTH + x + draw_x;
+            if (pixels[i]) {
+                collision = true;
+            }
+            pixels[i] ^= (row & 0x80);
+            row <<= 1;
+        }
+    }
+    return collision;
 }
 

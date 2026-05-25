@@ -116,8 +116,7 @@ void cpu_clock_cycle(struct cpu *cpu) {
     } else if ((instruction & 0xF000) == 0xC000) {
         random_value(cpu, instruction);
     } else if ((instruction & 0xF000) == 0xD000) {
-        // TODO: Draw sprite
-        printf("Draw sprite\n");
+        draw(cpu, instruction);
     } else if ((instruction & 0xF000) == 0xE000) {
         uint16_t last_byte = instruction & 0x00FF;
         if (last_byte == 0x009E) {
@@ -322,8 +321,19 @@ void random_value(struct cpu *cpu, uint16_t instruction) {
     cpu->registers[reg] = value & mask;
 }
 
-void draw(struct cpu *cpu) {
-    // TODO: Implement
+void draw(struct cpu *cpu, uint16_t instruction) {
+    int reg_x = (instruction & 0x0F00) >> 8;
+    int reg_y = (instruction & 0x00F0) >> 4;
+    int bytes = instruction & 0x000F;
+    uint16_t offset = cpu->i;
+    int x = cpu->registers[reg_x];
+    int y = cpu->registers[reg_y];
+    bool collision = display_draw_sprite(cpu->memory + offset, bytes, x, y);
+    if (collision) {
+        cpu->registers[0xF] = 1;
+    } else {
+        cpu->registers[0xF] = 0;
+    }
 }
 
 void skip_key_pressed(struct cpu *cpu) {

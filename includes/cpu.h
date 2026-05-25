@@ -7,7 +7,7 @@
 struct cpu {
     // Registers
     uint8_t registers[16];
-    int16_t i;
+    uint16_t i;
     uint8_t dt;
     uint8_t st;
 
@@ -164,7 +164,7 @@ void random_value(struct cpu *cpu, uint16_t instruction);
 /**
  * Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision.
  */
-void draw(struct cpu *cpu);
+void draw(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Skip next instruction if key with the value in given register is pressed.
