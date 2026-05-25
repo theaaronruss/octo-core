@@ -184,7 +184,7 @@ void load_delay_timer(struct cpu *cpu, uint16_t instruction);
 /**
  * Wait for a key press, store the value of the key in a register.
  */
-void load_key(struct cpu *cpu);
+void load_key(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Set delay timer to a value in a given register.

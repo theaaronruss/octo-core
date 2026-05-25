@@ -14,6 +14,8 @@
 #define ROM_ADDR 0x200
 #define ROM_SIZE 3584
 
+const extern SDL_Scancode scan_codes[];
+
 static uint8_t char_data[] = {
     0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
     0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -130,8 +132,7 @@ void cpu_clock_cycle(struct cpu *cpu) {
         if (last_byte == 0x0007) {
             load_delay_timer(cpu, instruction);
         } else if (last_byte == 0x000A) {
-            // TODO: Wait for keypress
-            printf("Wait for keypress\n");
+            load_key(cpu, instruction);
         } else if (last_byte == 0x0015) {
             set_delay_timer(cpu, instruction);
         } else if (last_byte == 0x0018) {
@@ -356,8 +357,14 @@ void load_delay_timer(struct cpu *cpu, uint16_t instruction) {
     cpu->registers[reg] = cpu->dt;
 }
 
-void load_key(struct cpu *cpu) {
-    // TODO: Implement
+void load_key(struct cpu *cpu, uint16_t instruction) {
+    int key = current_key();
+    if (key != -1) {
+        int reg = (instruction & 0x0F00) >> 8;
+        cpu->registers[reg] = key;
+    } else {
+        cpu->pc -= 2;
+    }
 }
 
 void set_delay_timer(struct cpu *cpu, uint16_t instruction) {
