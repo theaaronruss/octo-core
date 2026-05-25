@@ -9,7 +9,6 @@
 #include <time.h>
 
 #define MEM_SIZE 4096
-
 #define CHAR_ADDR 0x050
 #define ROM_ADDR 0x200
 #define ROM_SIZE 3584
@@ -245,12 +244,12 @@ void add_registers(struct cpu *cpu, uint16_t instruction) {
     int reg_y = (instruction & 0x00F0) >> 4;
     uint8_t value_x = cpu->registers[reg_x];
     uint8_t value_y = cpu->registers[reg_y];
+    cpu->registers[reg_x] = value_x + value_y;
     if (value_x + value_y > 0xFF) {
         cpu->registers[0xF] = 1;
     } else {
         cpu->registers[0xF] = 0;
     }
-    cpu->registers[reg_x] = value_x + value_y;
 }
 
 void sub_registers(struct cpu *cpu, uint16_t instruction) {
@@ -258,19 +257,19 @@ void sub_registers(struct cpu *cpu, uint16_t instruction) {
     int reg_y = (instruction & 0x00F0) >> 4;
     uint8_t value_x = cpu->registers[reg_x];
     uint8_t value_y = cpu->registers[reg_y];
-    if (value_x > value_y) {
+    cpu->registers[reg_x] = value_x - value_y;
+    if (value_x >= value_y) {
         cpu->registers[0xF] = 1;
     } else {
         cpu->registers[0xF] = 0;
     }
-    cpu->registers[reg_x] = value_x - value_y;
 }
 
 void shift_register_right(struct cpu *cpu, uint16_t instruction) {
     int reg = (instruction & 0x0F00) >> 8;
     uint8_t value = cpu->registers[reg];
-    cpu->registers[0xF] = value & 0x01;
     cpu->registers[reg] >>= 1;
+    cpu->registers[0xF] = value & 0x01;
 }
 
 void sub_registers_reverse(struct cpu *cpu, uint16_t instruction) {
@@ -278,19 +277,19 @@ void sub_registers_reverse(struct cpu *cpu, uint16_t instruction) {
     int reg_y = (instruction & 0x00F0) >> 4;
     uint8_t value_x = cpu->registers[reg_x];
     uint8_t value_y = cpu->registers[reg_y];
-    if (value_y > value_x) {
+    cpu->registers[reg_x] = value_y - value_x;
+    if (value_y >= value_x) {
         cpu->registers[0xF] = 1;
     } else {
         cpu->registers[0xF] = 0;
     }
-    cpu->registers[reg_x] = value_y - value_x;
 }
 
 void shift_register_left(struct cpu *cpu, uint16_t instruction) {
     int reg = (instruction & 0x0F00) >> 8;
     uint8_t value = cpu->registers[reg];
-    cpu->registers[0xF] = value & 0x80;
     cpu->registers[reg] <<= 1;
+    cpu->registers[0xF] = value >> 7;
 }
 
 void skip_not_equal_register(struct cpu *cpu, uint16_t instruction) {
