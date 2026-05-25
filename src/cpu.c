@@ -1,5 +1,6 @@
 #include "cpu.h"
 #include "display.h"
+#include "keyboard.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -120,11 +121,9 @@ void cpu_clock_cycle(struct cpu *cpu) {
     } else if ((instruction & 0xF000) == 0xE000) {
         uint16_t last_byte = instruction & 0x00FF;
         if (last_byte == 0x009E) {
-            // TODO: Skip instruction if key Vx is pressed
-            printf("Skip instruction if key Vx is pressed\n");
+            skip_key_pressed(cpu, instruction);
         } else if (last_byte == 0x00A1) {
-            // TODO: Skip instruction if key Vx is not pressed
-            printf("Skip instruction if key Vx is not pressed\n");
+            skip_key_not_pressed(cpu, instruction);
         }
     } else if ((instruction & 0xF000) == 0xF000) {
         uint16_t last_byte = instruction & 0x00FF;
@@ -336,12 +335,20 @@ void draw(struct cpu *cpu, uint16_t instruction) {
     }
 }
 
-void skip_key_pressed(struct cpu *cpu) {
-    // TODO: Implement
+void skip_key_pressed(struct cpu *cpu, uint16_t instruction) {
+    int reg = (instruction & 0x0F00) >> 8;
+    int value = cpu->registers[reg] & 0xF;
+    if (is_key_pressed(scan_codes[value])) {
+        cpu->pc += 2;
+    }
 }
 
-void skip_key_not_pressed(struct cpu *cpu) {
-    // TODO: Implement
+void skip_key_not_pressed(struct cpu *cpu, uint16_t instruction) {
+    int reg = (instruction & 0x0F00) >> 8;
+    int value = cpu->registers[reg] & 0xF;
+    if (!is_key_pressed(scan_codes[value])) {
+        cpu->pc += 2;
+    }
 }
 
 void load_delay_timer(struct cpu *cpu, uint16_t instruction) {

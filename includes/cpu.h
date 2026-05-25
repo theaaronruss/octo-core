@@ -169,12 +169,12 @@ void draw(struct cpu *cpu, uint16_t instruction);
 /**
  * Skip next instruction if key with the value in given register is pressed.
  */
-void skip_key_pressed(struct cpu *cpu);
+void skip_key_pressed(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Skip next instruction if key with the value in given register is not pressed.
  */
-void skip_key_not_pressed(struct cpu *cpu);
+void skip_key_not_pressed(struct cpu *cpu, uint16_t instruction);
 
 /**
  * Load delay timer value into a register.

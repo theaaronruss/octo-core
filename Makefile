@@ -2,7 +2,7 @@ CC := gcc
 OBJ := build
 INC := -I./includes
 
-octocore: $(OBJ)/main.o $(OBJ)/cpu.o $(OBJ)/display.o
+octocore: $(OBJ)/main.o $(OBJ)/cpu.o $(OBJ)/display.o $(OBJ)/keyboard.o
 	$(CC) $^ $(LDFLAGS) -lSDL3 -o octocore
 
 $(OBJ)/main.o: src/main.c | $(OBJ)
@@ -13,6 +13,9 @@ $(OBJ)/cpu.o: src/cpu.c | $(OBJ)
 
 $(OBJ)/display.o: src/display.c | $(OBJ)
 	$(CC) $(CFLAGS) $(INC) -c src/display.c -o $(OBJ)/display.o
+
+$(OBJ)/keyboard.o: src/keyboard.c | $(OBJ)
+	$(CC) $(CFLAGS) $(INC) -c src/keyboard.c -o $(OBJ)/keyboard.o
 
 $(OBJ):
 	mkdir -p build
