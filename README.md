@@ -5,13 +5,12 @@ A CHIP-8 emulator written in C
 ## Dependencies
 * SDL3
 
-## Building
+## Building & Running
 
 ### Mac
 * Ensure SDL3 is installed
-* Build with `gcc -c src/main.c $CFLAGS`
-* Link with `gcc main.o $LDFLAGS -lSDL3`
-* Run with `./main`
+* Build with `make`
+* Run with `./octocore`
 
 ## Keyboard
 
