@@ -1,5 +1,4 @@
-octocore
 build/
 compile_flags.txt
-.DS_Store
 test.ch8
+
